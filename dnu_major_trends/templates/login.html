@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng nhập - DNU Major Trends{% endblock %}
+
+{% block auth_content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="text-center mb-4">
+            <div class="auth-logo">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h2 class="fw-bold">DNU Major Trends</h2>
+            <p class="text-muted">Phân tích và dự báo xu hướng ngành nghề</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" class="form-control" id="username" name="username" required autocomplete="username">
+                    <div class="invalid-feedback">
+                        Vui lòng nhập tên đăng nhập.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                    <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
+                    <div class="invalid-feedback">
+                        Vui lòng nhập mật khẩu.
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mb-3">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                </button>
+            </div>
+
+            <div class="text-center">
+                <p class="mb-0">Chưa có tài khoản? 
+                    <a href="{{ url_for('register') }}" class="text-decoration-none">Đăng ký ngay</a>
+                </p>
+            </div>
+        </form>
+
+        <div class="auth-footer mt-4">
+            <div class="alert alert-info" role="alert">
+                <i class="bi bi-info-circle"></i>
+                <small>Tài khoản mặc định: <strong>admin</strong> / <strong>admin</strong></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+})();
+</script>
+{% endblock %}

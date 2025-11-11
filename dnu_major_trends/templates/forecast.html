@@ -1,0 +1,456 @@
+{% extends "base.html" %}
+
+{% block title %}Dự báo xu hướng - DNU Major Trends{% endblock %}
+{% block page_title %}Dự báo xu hướng ngành{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-end">
+                    <div class="col-md-5">
+                        <label for="forecastMajor" class="form-label">Chọn ngành dự báo</label>
+                        <select class="form-select" id="forecastMajor">
+                            <option value="">-- Chọn ngành --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="forecastYears" class="form-label">Số năm dự báo</label>
+                        <input type="number" class="form-control" id="forecastYears" 
+                               value="5" min="1" max="10">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary me-2" onclick="loadForecast()">
+                            <i class="bi bi-graph-up"></i> Dự báo
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="loadSummary()">
+                            <i class="bi bi-list-check"></i> Tổng quan tất cả ngành
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Indicator -->
+<div id="loadingIndicator" class="text-center my-5" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Đang tính toán dự báo...</p>
+</div>
+
+<!-- Forecast Result -->
+<div id="forecastResult" style="display: none;">
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon text-info">
+                    <i class="bi bi-calendar-event"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="currentYear" class="mb-0">--</h3>
+                    <p class="text-muted mb-0">Năm hiện tại</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon text-primary">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="currentStudents" class="mb-0">--</h3>
+                    <p class="text-muted mb-0">SV hiện tại</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon text-success">
+                    <i class="bi bi-arrow-up-right"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="predictedStudents" class="mb-0">--</h3>
+                    <p class="text-muted mb-0">Dự báo năm cuối</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-graph-up-arrow"></i> 
+                        Biểu đồ dự báo: <span id="forecastMajorTitle"></span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="forecastChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-table"></i> Dữ liệu chi tiết</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="forecastTable">
+                            <thead>
+                                <tr>
+                                    <th>Năm</th>
+                                    <th>Số sinh viên</th>
+                                    <th>Loại</th>
+                                    <th>Thay đổi (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Summary Result -->
+<div id="summaryResult" style="display: none;">
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-arrow-up-circle"></i> Top 5 ngành TĂNG TRƯỞNG</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush" id="growingList">
+                        <p class="text-center text-muted">Đang tải...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="bi bi-arrow-down-circle"></i> Top 5 ngành SUY GIẢM</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush" id="decliningList">
+                        <p class="text-center text-muted">Đang tải...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-bar-chart-line"></i> Biểu đồ so sánh tăng trưởng</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="summaryChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Panel -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info">
+            <h6 class="alert-heading"><i class="bi bi-info-circle"></i> Về dự báo</h6>
+            <p class="mb-0">
+                Hệ thống sử dụng các thuật toán Machine Learning (Prophet, Linear Regression, ARIMA) 
+                để dự đoán xu hướng số lượng sinh viên chọn ngành trong tương lai dựa trên dữ liệu lịch sử. 
+                Kết quả mang tính tham khảo và có thể bị ảnh hưởng bởi nhiều yếu tố ngoại cảnh.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let forecastChart, summaryChart;
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadMajorsList();
+});
+
+async function loadMajorsList() {
+    try {
+        const response = await fetch('/api/majors');
+        const data = await response.json();
+        
+        const select = document.getElementById('forecastMajor');
+        data.majors.forEach(major => {
+            select.innerHTML += `<option value="${major}">${major}</option>`;
+        });
+    } catch (error) {
+        console.error('Error loading majors:', error);
+    }
+}
+
+async function loadForecast() {
+    const major = document.getElementById('forecastMajor').value;
+    const years = document.getElementById('forecastYears').value;
+    
+    if (!major) {
+        alert('Vui lòng chọn ngành để dự báo');
+        return;
+    }
+    
+    document.getElementById('loadingIndicator').style.display = 'block';
+    document.getElementById('forecastResult').style.display = 'none';
+    document.getElementById('summaryResult').style.display = 'none';
+    
+    try {
+        const response = await fetch(`/api/forecast?major=${encodeURIComponent(major)}&years=${years}`);
+        const data = await response.json();
+        
+        document.getElementById('loadingIndicator').style.display = 'none';
+        document.getElementById('forecastResult').style.display = 'block';
+        
+        displayForecast(data);
+    } catch (error) {
+        console.error('Error loading forecast:', error);
+        document.getElementById('loadingIndicator').style.display = 'none';
+        alert('Lỗi khi tải dự báo. Vui lòng thử lại.');
+    }
+}
+
+function displayForecast(data) {
+    document.getElementById('forecastMajorTitle').textContent = data.major;
+    
+    const history = data.history || [];
+    const forecast = data.forecast || [];
+    
+    if (history.length > 0) {
+        const lastHistory = history[history.length - 1];
+        document.getElementById('currentYear').textContent = lastHistory.year;
+        document.getElementById('currentStudents').textContent = 
+            lastHistory.students.toLocaleString('vi-VN');
+    }
+    
+    if (forecast.length > 0) {
+        const lastForecast = forecast[forecast.length - 1];
+        document.getElementById('predictedStudents').textContent = 
+            Math.round(lastForecast.yhat).toLocaleString('vi-VN');
+    }
+    
+    // Create chart
+    updateForecastChart(history, forecast);
+    
+    // Create table
+    updateForecastTable(history, forecast);
+}
+
+function updateForecastChart(history, forecast) {
+    if (forecastChart) forecastChart.destroy();
+    
+    const allYears = [...history.map(h => h.year), ...forecast.map(f => f.year)];
+    const historyData = history.map(h => h.students);
+    const forecastData = new Array(history.length).fill(null).concat(forecast.map(f => f.yhat));
+    
+    const ctx = document.getElementById('forecastChart').getContext('2d');
+    forecastChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: allYears,
+            datasets: [
+                {
+                    label: 'Dữ liệu thực tế',
+                    data: [...historyData, ...new Array(forecast.length).fill(null)],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Dự báo',
+                    data: forecastData,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderDash: [5, 5],
+                    tension: 0.4,
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        label: context => {
+                            if (context.parsed.y !== null) {
+                                return context.dataset.label + ': ' + 
+                                       Math.round(context.parsed.y).toLocaleString('vi-VN') + ' SV';
+                            }
+                            return '';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: value => value.toLocaleString('vi-VN')
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateForecastTable(history, forecast) {
+    const tbody = document.querySelector('#forecastTable tbody');
+    tbody.innerHTML = '';
+    
+    let prevValue = null;
+    
+    history.forEach(item => {
+        const change = prevValue ? ((item.students - prevValue) / prevValue * 100).toFixed(1) : '--';
+        const changeClass = change > 0 ? 'text-success' : change < 0 ? 'text-danger' : '';
+        
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${item.year}</strong></td>
+                <td>${item.students.toLocaleString('vi-VN')}</td>
+                <td><span class="badge bg-primary">Thực tế</span></td>
+                <td class="${changeClass}">${change !== '--' ? change + '%' : '--'}</td>
+            </tr>
+        `;
+        prevValue = item.students;
+    });
+    
+    forecast.forEach(item => {
+        const change = prevValue ? ((item.yhat - prevValue) / prevValue * 100).toFixed(1) : '--';
+        const changeClass = change > 0 ? 'text-success' : change < 0 ? 'text-danger' : '';
+        
+        tbody.innerHTML += `
+            <tr class="table-light">
+                <td><strong>${item.year}</strong></td>
+                <td>${Math.round(item.yhat).toLocaleString('vi-VN')}</td>
+                <td><span class="badge bg-warning">Dự báo</span></td>
+                <td class="${changeClass}">${change !== '--' ? change + '%' : '--'}</td>
+            </tr>
+        `;
+        prevValue = item.yhat;
+    });
+}
+
+async function loadSummary() {
+    document.getElementById('loadingIndicator').style.display = 'block';
+    document.getElementById('forecastResult').style.display = 'none';
+    document.getElementById('summaryResult').style.display = 'none';
+    
+    try {
+        const response = await fetch('/api/forecast/summary');
+        const data = await response.json();
+        
+        document.getElementById('loadingIndicator').style.display = 'none';
+        document.getElementById('summaryResult').style.display = 'block';
+        
+        displaySummary(data.summary);
+    } catch (error) {
+        console.error('Error loading summary:', error);
+        document.getElementById('loadingIndicator').style.display = 'none';
+        alert('Lỗi khi tải tổng quan. Vui lòng thử lại.');
+    }
+}
+
+function displaySummary(summary) {
+    const growingList = document.getElementById('growingList');
+    const decliningList = document.getElementById('decliningList');
+    
+    growingList.innerHTML = '';
+    decliningList.innerHTML = '';
+    
+    summary.top_growing.forEach((item, idx) => {
+        growingList.innerHTML += `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge bg-success me-2">#${idx + 1}</span>
+                    <strong>${item.major}</strong>
+                </div>
+                <span class="badge bg-success rounded-pill">+${item.pct_change.toFixed(1)}%</span>
+            </div>
+        `;
+    });
+    
+    summary.top_declining.forEach((item, idx) => {
+        decliningList.innerHTML += `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge bg-danger me-2">#${idx + 1}</span>
+                    <strong>${item.major}</strong>
+                </div>
+                <span class="badge bg-danger rounded-pill">${item.pct_change.toFixed(1)}%</span>
+            </div>
+        `;
+    });
+    
+    // Create comparison chart
+    updateSummaryChart(summary);
+}
+
+function updateSummaryChart(summary) {
+    if (summaryChart) summaryChart.destroy();
+    
+    const growing = summary.top_growing.slice(0, 5);
+    const declining = summary.top_declining.slice(0, 5);
+    
+    const labels = [...growing.map(m => m.major), ...declining.map(m => m.major)];
+    const values = [...growing.map(m => m.pct_change), ...declining.map(m => m.pct_change)];
+    const colors = values.map(v => v >= 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(255, 99, 132, 0.6)');
+    
+    const ctx = document.getElementById('summaryChart').getContext('2d');
+    summaryChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Tăng trưởng (%)',
+                data: values,
+                backgroundColor: colors
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: context => context.parsed.x.toFixed(1) + '%'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        callback: value => value + '%'
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}

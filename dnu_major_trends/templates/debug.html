@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Debug - DNU Major Trends{% endblock %}
+{% block page_title %}Debug & Testing{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-warning">
+            <h5 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Debug Mode</h5>
+            <p class="mb-0">Trang này dành cho developer để kiểm tra các API và chức năng của hệ thống.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0"><i class="bi bi-speedometer"></i> API Status</h6>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-sm btn-primary" onclick="testAPI()">
+                    <i class="bi bi-play"></i> Test All APIs
+                </button>
+                <div id="apiStatus" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0"><i class="bi bi-database"></i> Database Info</h6>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-sm btn-success" onclick="loadDBInfo()">
+                    <i class="bi bi-info-circle"></i> Show DB Info
+                </button>
+                <div id="dbInfo" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h6 class="mb-0"><i class="bi bi-terminal"></i> API Endpoints</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge bg-primary">GET</span></td>
+                                <td><code>/api/test</code></td>
+                                <td>Test API connection</td>
+                                <td><button class="btn btn-xs btn-outline-primary" onclick="callAPI('/api/test')">Test</button></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-primary">GET</span></td>
+                                <td><code>/api/overview</code></td>
+                                <td>Get overview statistics</td>
+                                <td><button class="btn btn-xs btn-outline-primary" onclick="callAPI('/api/overview')">Test</button></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-primary">GET</span></td>
+                                <td><code>/api/majors</code></td>
+                                <td>Get list of majors</td>
+                                <td><button class="btn btn-xs btn-outline-primary" onclick="callAPI('/api/majors')">Test</button></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-primary">GET</span></td>
+                                <td><code>/api/yearly_summary</code></td>
+                                <td>Get yearly summary</td>
+                                <td><button class="btn btn-xs btn-outline-primary" onclick="callAPI('/api/yearly_summary')">Test</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h6 class="mb-0"><i class="bi bi-code-square"></i> API Response</h6>
+            </div>
+            <div class="card-body">
+                <pre id="apiResponse" class="bg-dark text-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
+// API response will appear here
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function testAPI() {
+    const statusDiv = document.getElementById('apiStatus');
+    statusDiv.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Testing...';
+    
+    const endpoints = [
+        '/api/test',
+        '/api/overview',
+        '/api/majors',
+        '/api/yearly_summary'
+    ];
+    
+    let results = [];
+    for (const endpoint of endpoints) {
+        try {
+            const start = performance.now();
+            const response = await fetch(endpoint);
+            const duration = performance.now() - start;
+            
+            if (response.ok) {
+                results.push(`<div class="text-success">✓ ${endpoint} (${duration.toFixed(0)}ms)</div>`);
+            } else {
+                results.push(`<div class="text-danger">✗ ${endpoint} - ${response.status}</div>`);
+            }
+        } catch (error) {
+            results.push(`<div class="text-danger">✗ ${endpoint} - ${error.message}</div>`);
+        }
+    }
+    
+    statusDiv.innerHTML = results.join('');
+}
+
+async function loadDBInfo() {
+    const dbInfoDiv = document.getElementById('dbInfo');
+    dbInfoDiv.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Loading...';
+    
+    try {
+        const response = await fetch('/api/overview');
+        const data = await response.json();
+        
+        dbInfoDiv.innerHTML = `
+            <dl class="row mb-0">
+                <dt class="col-sm-6">Total Students:</dt>
+                <dd class="col-sm-6">${data.total_students.toLocaleString()}</dd>
+                
+                <dt class="col-sm-6">Total Majors:</dt>
+                <dd class="col-sm-6">${data.total_majors}</dd>
+                
+                <dt class="col-sm-6">Years:</dt>
+                <dd class="col-sm-6">${data.years.join(', ')}</dd>
+            </dl>
+        `;
+    } catch (error) {
+        dbInfoDiv.innerHTML = `<div class="text-danger">Error: ${error.message}</div>`;
+    }
+}
+
+async function callAPI(endpoint) {
+    const responseDiv = document.getElementById('apiResponse');
+    responseDiv.textContent = '// Loading...';
+    
+    try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        responseDiv.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+        responseDiv.textContent = `// Error: ${error.message}`;
+    }
+}
+</script>
+{% endblock %}

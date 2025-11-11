@@ -1,0 +1,128 @@
+════════════════════════════════════════════════════════════════
+  HƯỚNG DẪN SỬ DỤNG DỮ LIỆU MẪU - DNU TRENDS
+  Hệ thống phân tích xu hướng chọn ngành tại ĐH Đại Nam
+════════════════════════════════════════════════════════════════
+
+📁 CÁC FILE DỮ LIỆU MẪU:
+-----------------------------------
+1. du_lieu_chon_nganh_2020_2024.csv
+   - Dữ liệu đầy đủ từ năm 2020 đến 2024
+   - Bao gồm 8 ngành học phổ biến
+   - 210 bản ghi dữ liệu
+   - Phù hợp để phân tích xu hướng dài hạn và dự báo
+
+2. du_lieu_2023_chi_tiet.csv
+   - Dữ liệu chi tiết của năm 2023
+   - Bao gồm 10 ngành học (thêm Điều dưỡng, Kiến trúc, Du lịch)
+   - 60 bản ghi dữ liệu
+   - Phù hợp để phân tích theo giới tính và khu vực
+
+
+📊 CẤU TRÚC DỮ LIỆU:
+-----------------------------------
+Mỗi file CSV có 5 cột:
+
+• Năm: Năm học (2020-2024)
+• Ngành: Tên ngành đào tạo
+• Số lượng sinh viên: Số sinh viên đăng ký ngành
+• Giới tính: Nam hoặc Nữ
+• Khu vực: Miền Bắc, Miền Trung, Miền Nam
+
+⚠️ LƯU Ý QUAN TRỌNG:
+- File CSV phải có BOM UTF-8 encoding để hiển thị đúng tiếng Việt
+- Mỗi dòng dữ liệu đại diện cho một nhóm sinh viên theo giới tính
+- Ví dụ: Năm 2023, ngành CNTT có 2 dòng (1 cho Nam, 1 cho Nữ)
+- Hệ thống sẽ tự động gộp dữ liệu theo năm, ngành và khu vực
+
+
+🎓 CÁC NGÀNH HỌC TRONG DỮ LIỆU:
+-----------------------------------
+File 1 (2020-2024):
+1. Công nghệ thông tin - Ngành phát triển nhanh nhất
+2. Quản trị kinh doanh - Ngành được ưa chuộng nhất
+3. Kế toán - Đa số nữ sinh viên
+4. Ngôn ngữ Anh - Xu hướng tăng ổn định
+5. Luật kinh tế - Tăng trưởng đều
+6. Thiết kế đồ họa - Ngành mới từ 2022
+7. Marketing - Ngành mới từ 2023
+8. Khoa học dữ liệu - Ngành hot từ 2024
+
+File 2 (2023 chi tiết):
++ Thêm: Điều dưỡng, Kiến trúc, Du lịch và Khách sạn
+
+
+📈 XU HƯỚNG TRONG DỮ LIỆU:
+-----------------------------------
+✅ Công nghệ thông tin: Tăng mạnh 89% (2020-2024)
+✅ Quản trị kinh doanh: Tăng đều 47% 
+✅ Kế toán: Tăng ổn định 43%
+✅ Ngôn ngữ Anh: Tăng 54%
+✅ Thiết kế đồ họa: Ngành mới, tiềm năng cao
+✅ Khoa học dữ liệu: Ngành hot năm 2024
+
+📊 Theo giới tính:
+• Công nghệ thông tin: 60% Nam - 40% Nữ
+• Quản trị kinh doanh: 38% Nam - 62% Nữ
+• Kế toán: 30% Nam - 70% Nữ
+• Ngôn ngữ Anh: 28% Nam - 72% Nữ
+• Điều dưỡng: 25% Nam - 75% Nữ
+
+🗺️ Theo khu vực:
+• Miền Bắc: 38% - Thành phố lớn, nhiều cơ hội
+• Miền Trung: 27% - Ít hơn do điều kiện kinh tế
+• Miền Nam: 35% - Phát triển mạnh, nhiều doanh nghiệp
+
+
+🚀 CÁCH SỬ DỤNG:
+-----------------------------------
+Bước 1: Đăng nhập vào hệ thống DNU Trends
+        → http://127.0.0.1:5000
+
+Bước 2: Vào menu "📤 Upload dữ liệu"
+        (Chỉ dành cho Admin)
+
+Bước 3: Chọn file CSV cần upload:
+        • File 1 để phân tích xu hướng 5 năm
+        • File 2 để phân tích chi tiết 2023
+
+Bước 4: Nhấn "Upload" và chờ xử lý dữ liệu
+
+Bước 5: Khám phá các trang:
+        📊 Trang chủ - Xem tổng quan và heatmap
+        📈 Phân tích xu hướng - Chọn ngành để xem chi tiết
+        🔮 Dự báo ngành - Dự báo tương lai 1-10 năm
+        💬 Chatbot tư vấn - Hỏi về ngành phù hợp
+        📄 Xuất báo cáo - Tải Excel/PDF
+
+
+💡 GỢI Ý PHÂN TÍCH:
+-----------------------------------
+1. Upload file 2020-2024 trước
+2. Xem Trang chủ để thấy tổng quan
+3. Vào "Phân tích xu hướng" chọn "Công nghệ thông tin"
+4. Vào "Dự báo ngành" để xem xu hướng 5 năm tới
+5. Thử Chatbot: "Ngành nào phù hợp với nam sinh viên?"
+6. Xuất báo cáo để chia sẻ
+
+
+⚙️ YÊU CẦU HỆ THỐNG:
+-----------------------------------
+• File CSV phải có đúng 5 cột như trên
+• Encoding: UTF-8 (có dấu tiếng Việt)
+• Định dạng: CSV (dấu phân cách: dấu phẩy)
+• Kích thước: Tối đa 10MB
+
+
+📧 HỖ TRỢ:
+-----------------------------------
+Nếu gặp lỗi khi upload dữ liệu:
+1. Kiểm tra định dạng file CSV
+2. Đảm bảo có đúng 5 cột
+3. Kiểm tra encoding UTF-8
+4. Xem logs trong terminal
+
+
+════════════════════════════════════════════════════════════════
+  Chúc bạn phân tích thành công! 🎉
+  DNU Trends - Đại học Đại Nam
+════════════════════════════════════════════════════════════════

@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+
+{% block title %}Báo cáo - DNU Major Trends{% endblock %}
+{% block page_title %}Báo cáo và xuất dữ liệu{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Export Options -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-download"></i> Xuất dữ liệu</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="export-card">
+                            <div class="export-icon text-success">
+                                <i class="bi bi-file-earmark-excel"></i>
+                            </div>
+                            <h5>Xuất Excel</h5>
+                            <p class="text-muted">Tải toàn bộ dữ liệu dưới dạng file Excel (.xlsx)</p>
+                            <a href="{{ url_for('export_excel') }}" class="btn btn-success">
+                                <i class="bi bi-download"></i> Tải Excel
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="export-card">
+                            <div class="export-icon text-danger">
+                                <i class="bi bi-file-earmark-pdf"></i>
+                            </div>
+                            <h5>Xuất PDF</h5>
+                            <p class="text-muted">Tải báo cáo tổng quan dưới dạng PDF</p>
+                            <a href="{{ url_for('export_pdf') }}" class="btn btn-danger">
+                                <i class="bi bi-download"></i> Tải PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Summary -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Thống kê tổng quan</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-4" id="statsContainer">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon text-primary">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalStudents">---</h3>
+                                <p class="text-muted mb-0">Tổng sinh viên</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon text-success">
+                                <i class="bi bi-book"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalMajors">---</h3>
+                                <p class="text-muted mb-0">Số ngành</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon text-info">
+                                <i class="bi bi-calendar-range"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="yearRange">---</h3>
+                                <p class="text-muted mb-0">Khoảng năm</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon text-warning">
+                                <i class="bi bi-trophy"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="topMajor">---</h3>
+                                <p class="text-muted mb-0">Ngành HOT nhất</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Majors Table -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-list-ol"></i> Top 10 ngành có nhiều sinh viên nhất</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="topMajorsTable">
+                        <thead>
+                            <tr>
+                                <th width="50">#</th>
+                                <th>Ngành</th>
+                                <th class="text-end">Tổng SV</th>
+                                <th class="text-end">Nam</th>
+                                <th class="text-end">Nữ</th>
+                                <th class="text-end">Tỷ lệ Nam/Nữ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Yearly Summary -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-calendar3"></i> Tổng kết theo năm</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="yearlyTable">
+                        <thead>
+                            <tr>
+                                <th>Năm</th>
+                                <th class="text-end">Tổng SV</th>
+                                <th class="text-end">Số ngành</th>
+                                <th class="text-end">TB SV/Ngành</th>
+                                <th>Ngành HOT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-graph-up"></i> Biểu đồ tăng trưởng theo năm</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="yearlyChart" height="80"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let yearlyChart;
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadReportData();
+});
+
+async function loadReportData() {
+    try {
+        const [overview, yearly] = await Promise.all([
+            fetch('/api/overview').then(r => r.json()),
+            fetch('/api/yearly_summary').then(r => r.json())
+        ]);
+        
+        // Update stats
+        document.getElementById('totalStudents').textContent = 
+            overview.total_students.toLocaleString('vi-VN');
+        document.getElementById('totalMajors').textContent = overview.total_majors;
+        
+        if (overview.years && overview.years.length > 0) {
+            const minYear = Math.min(...overview.years);
+            const maxYear = Math.max(...overview.years);
+            document.getElementById('yearRange').textContent = 
+                minYear === maxYear ? minYear : `${minYear}-${maxYear}`;
+        }
+        
+        if (overview.top_majors && overview.top_majors.length > 0) {
+            document.getElementById('topMajor').textContent = overview.top_majors[0].major;
+        }
+        
+        // Update top majors table
+        updateTopMajorsTable(overview.top_majors);
+        
+        // Update yearly table
+        if (yearly.years) {
+            updateYearlyTable(yearly.years);
+            updateYearlyChart(yearly.years);
+        }
+        
+    } catch (error) {
+        console.error('Error loading report data:', error);
+    }
+}
+
+async function updateTopMajorsTable(topMajors) {
+    const tbody = document.querySelector('#topMajorsTable tbody');
+    tbody.innerHTML = '';
+    
+    // Get gender data for each major
+    for (let i = 0; i < Math.min(10, topMajors.length); i++) {
+        const major = topMajors[i];
+        
+        try {
+            const genderData = await fetch(`/api/gender?major=${encodeURIComponent(major.major)}`)
+                .then(r => r.json());
+            
+            const total = genderData.male + genderData.female;
+            const ratio = total > 0 ? (genderData.male / genderData.female).toFixed(2) : '--';
+            
+            tbody.innerHTML += `
+                <tr>
+                    <td><span class="badge bg-primary">${i + 1}</span></td>
+                    <td><strong>${major.major}</strong></td>
+                    <td class="text-end">${major.students.toLocaleString('vi-VN')}</td>
+                    <td class="text-end">${genderData.male.toLocaleString('vi-VN')}</td>
+                    <td class="text-end">${genderData.female.toLocaleString('vi-VN')}</td>
+                    <td class="text-end">${ratio !== '--' ? ratio + ':1' : '--'}</td>
+                </tr>
+            `;
+        } catch (error) {
+            console.error('Error fetching gender data:', error);
+        }
+    }
+}
+
+function updateYearlyTable(years) {
+    const tbody = document.querySelector('#yearlyTable tbody');
+    tbody.innerHTML = '';
+    
+    years.forEach(year => {
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${year.year}</strong></td>
+                <td class="text-end">${year.total_students.toLocaleString('vi-VN')}</td>
+                <td class="text-end">${year.total_majors}</td>
+                <td class="text-end">${Math.round(year.avg_students_per_major).toLocaleString('vi-VN')}</td>
+                <td>${year.top_major || '--'}</td>
+            </tr>
+        `;
+    });
+}
+
+function updateYearlyChart(years) {
+    if (yearlyChart) yearlyChart.destroy();
+    
+    const ctx = document.getElementById('yearlyChart').getContext('2d');
+    yearlyChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: years.map(y => y.year),
+            datasets: [
+                {
+                    label: 'Tổng sinh viên',
+                    data: years.map(y => y.total_students),
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgb(75, 192, 192)',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Số ngành',
+                    data: years.map(y => y.total_majors),
+                    type: 'line',
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    yAxisID: 'y1',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += context.parsed.y.toLocaleString('vi-VN');
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    beginAtZero: true,
+                    ticks: {
+                        callback: value => value.toLocaleString('vi-VN')
+                    },
+                    title: {
+                        display: true,
+                        text: 'Số sinh viên'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    beginAtZero: true,
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Số ngành'
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.export-card {
+    text-align: center;
+    padding: 30px;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.export-card:hover {
+    border-color: #0d6efd;
+    background: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.export-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+</style>
+{% endblock %}
