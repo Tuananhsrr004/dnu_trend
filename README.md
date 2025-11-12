@@ -1,3 +1,33 @@
+<div align="center">
+
+<h2>
+    <a href="https://dainam.edu.vn/vi/khoa-cong-nghe-thong-tin">
+    🎓 Faculty of Information Technology (DaiNam University)
+    </a>
+</h2>
+
+<h1>Phân tích và dự báo xu hướng  chọn ngành ngành nghề tại Đại Học Đại Nam</h1>
+
+<p align="center">
+  <img src="docs/aiotlab_logo.png" alt="AIoT Lab" width="200" style="margin: 20px;"/>
+  <img src="docs/fitdnu_logo.png" alt="Faculty of IT" width="200" style="margin: 20px;"/>
+  <img src="docs/dnu_logo.png" alt="DaiNam University" width="200" style="margin: 20px;"/>
+</p>
+
+<p>
+  <a href="https://www.facebook.com/DNUAIoTLab">
+    <img src="https://img.shields.io/badge/AIoTLab-green?style=for-the-badge" alt="AIoTLab"/>
+  </a>
+  <a href="https://dainam.edu.vn/vi/khoa-cong-nghe-thong-tin">
+    <img src="https://img.shields.io/badge/Faculty%20of%20Information%20Technology-blue?style=for-the-badge" alt="Faculty of Information Technology"/>
+  </a>
+  <a href="https://dainam.edu.vn">
+    <img src="https://img.shields.io/badge/DaiNam%20University-orange?style=for-the-badge" alt="DaiNam University"/>
+  </a>
+</p>
+
+</div>
+---
 # 🎓 DNU Major Trends - Hệ thống Phân tích và Dự báo Xu hướng Chọn ngành
 
 ## 📚 Chuyển đổi số trong Giáo dục là gì?
@@ -42,109 +72,122 @@ Từ những câu hỏi này, **DNU Major Trends** ra đời như một giải p
 
 ---
 
-## 🎯 Giới thiệu Hệ thống
+## Giới thiệu
 
-**DNU Major Trends** là hệ thống phân tích và dự báo xu hướng chọn ngành nghề tại **Đại học Đại Nam**, được xây dựng dựa trên nền tảng công nghệ hiện đại:
-
-- **Backend**: Flask (Python) - Framework web nhẹ, linh hoạt
-- **Database**: SQLite - Lưu trữ dữ liệu lịch sử và dự báo
-- **AI/ML**: Prophet, scikit-learn - Dự báo xu hướng và phân tích
-- **Frontend**: Bootstrap 5, Chart.js - Giao diện thân thiện, biểu đồ tương tác
-- **Task Queue**: Celery + Redis - Tự động cập nhật dự báo định kỳ
-
-Hệ thống giúp **sinh viên, phụ huynh và nhà quản lý** đưa ra quyết định thông minh về việc chọn ngành học, dựa trên dữ liệu thực tế và dự báo khoa học.
-
----
+DNU Major Trends là hệ thống phân tích và dự báo xu hướng chọn ngành nghề tại **Đại học Đại Nam**. Hệ thống sử dụng công nghệ AI và Machine Learning để giúp sinh viên và nhà quản lý đưa ra quyết định đúng đắn về ngành học.
 
 ## ✨ Tính năng chính
 
-### Cho Sinh viên và Phụ huynh:
+### Cho Sinh viên:
+- 📊 **Dashboard Thống kê**: Xem xu hướng chọn ngành qua các năm với biểu đồ trực quan
+- 📈 **Dự báo Xu hướng**: Dự đoán số lượng sinh viên chọn ngành trong 5 năm tới bằng AI
+- 💬 **Chatbot Tư vấn**: AI chatbot giúp tư vấn ngành học phù hợp dựa trên sở thích và năng lực
+- 🔍 **So sánh Ngành**: So sánh nhiều ngành với nhau để đưa ra lựa chọn tốt nhất
 
-#### 📊 **Dashboard Thống kê Trực quan**
-- Xem xu hướng chọn ngành qua 5 năm (2020-2024) với biểu đồ đường/cột
-- Phân tích phân bố theo **giới tính** (Nam/Nữ) cho từng ngành
-- Xem biểu đồ **Heatmap** để nhanh chóng nhận biết ngành "HOT"
-- Thống kê theo **khu vực** (Miền Bắc, Trung, Nam)
-- Dữ liệu được cập nhật tự động từ database
-
-**Ví dụ**: Sinh viên có thể thấy rằng ngành **Công nghệ thông tin** tăng trưởng 89% từ 2020-2024, trong khi **Quản trị kinh doanh** tăng ổn định 47%.
-
-#### 📈 **Dự báo Xu hướng bằng AI**
-- Dự đoán số lượng sinh viên chọn ngành trong **1-10 năm tới**
-- Sử dụng thuật toán Prophet (Facebook) hoặc Linear Regression/ARIMA
-- Hiển thị biểu đồ dự báo với khoảng tin cậy (confidence interval)
-- Tự động cập nhật dự báo mỗi ngày lúc 02:00 sáng (Celery Beat)
-
-**Ví dụ**: Hệ thống dự báo ngành **Khoa học dữ liệu** sẽ có 1,200 sinh viên vào năm 2026, tăng 30% so với 2024.
-
-#### 💬 **Chatbot Tư vấn Thông minh**
-- AI chatbot sử dụng **TF-IDF + Cosine Similarity** để hiểu câu hỏi
-- Tư vấn ngành học phù hợp dựa trên:
-  - Sở thích (lập trình, kinh doanh, y tế...)
-  - Năng lực (toán, văn, ngoại ngữ...)
-  - Giới tính và khu vực
-- Trả lời các câu hỏi như:
-  - "Ngành nào phù hợp với nam sinh viên thích công nghệ?"
-  - "Ngành nào đang HOT nhất?"
-  - "So sánh Công nghệ thông tin và Khoa học dữ liệu"
-
-Xem mã nguồn chatbot tại [services/chatbot.py](services/chatbot.py).
-
-#### 🔍 **So sánh Ngành**
-- Chọn nhiều ngành để so sánh cùng lúc
-- Biểu đồ radar hiển thị điểm mạnh/yếu của từng ngành
-- So sánh số lượng sinh viên, tỷ lệ nam/nữ, điểm chuẩn trung bình
-
----
-
-### Cho Quản trị viên (Admin):
-
-#### 📤 **Upload Dữ liệu CSV/Excel**
-- Import dữ liệu từ file CSV hoặc Excel
-- Hỗ trợ **UTF-8 có dấu tiếng Việt**
-- Tự động validate định dạng: `year, major, students, male, female, region, avg_score`
-- Cập nhật hoặc thêm mới dữ liệu tự động
-- Xử lý file tối đa 10MB
-
-Xem hướng dẫn upload tại [templates/upload.html](templates/upload.html).
-
-**Dữ liệu mẫu**:
-- [sample_data/du_lieu_chon_nganh_2020_2024.csv](sample_data/du_lieu_chon_nganh_2020_2024.csv) - Dữ liệu 5 năm, 210 bản ghi
-- [sample_data/du_lieu_2023_chi_tiet.csv](sample_data/du_lieu_2023_chi_tiet.csv) - Dữ liệu chi tiết 2023, 60 bản ghi
-
-#### 📑 **Báo cáo Chi tiết**
-- Xuất báo cáo tổng quan dưới dạng **Excel (.xlsx)**
-- Xuất báo cáo dưới dạng **PDF** (kèm biểu đồ)
-- Báo cáo bao gồm:
-  - Thống kê tổng quan (tổng sinh viên, số ngành, xu hướng)
-  - Bảng chi tiết theo năm, ngành, khu vực
-  - Top 5 ngành hot nhất
-  - Dự báo 5 năm tới
-
-Xem trang báo cáo tại [templates/report.html](templates/report.html).
-
-#### 📊 **Phân tích Sâu**
-- Dashboard admin với nhiều biểu đồ tương tác
-- Phân tích theo **giới tính**: Ngành nào nữ sinh viên ưa chuộng?
-- Phân tích theo **khu vực**: Khu vực nào chọn ngành công nghệ nhiều nhất?
-- Phân tích **điểm chuẩn**: Ngành nào có điểm chuẩn cao nhất?
-- Heatmap độ "HOT" của ngành theo năm
-
-#### 🎯 **Insights và Khuyến nghị**
-- Tự động xác định ngành **HOT** (tăng trưởng > 50% trong 3 năm)
-- Ngành có xu hướng **tăng trưởng** hoặc **suy giảm**
-- Khuyến nghị về việc mở ngành mới hoặc điều chỉnh chỉ tiêu tuyển sinh
-
----
+### Cho Quản trị viên:
+- 📤 **Upload Dữ liệu**: Import dữ liệu từ file CSV/Excel
+- 📑 **Báo cáo Chi tiết**: Tạo báo cáo tổng quan và xuất dưới dạng Excel/PDF
+- 📊 **Phân tích Sâu**: Xem thống kê chi tiết theo giới tính, khu vực, điểm chuẩn
+- 🎯 **Insights**: Xác định ngành HOT và ngành có xu hướng tăng trưởng
 
 ## 🚀 Cài đặt và Chạy
 
-### Yêu cầu Hệ thống:
-- **Python 3.10+** (khuyến nghị 3.11)
-- **Redis** (tùy chọn, cho Celery)
-- Hệ điều hành: Windows, macOS, Linux
+### Yêu cầu:
+- Python 3.10+
 
-### Bước 1: Clone hoặc tải project
+### Các bước:
+
+1. **Cài đặt dependencies:**
 ```bash
-git clone <repository-url>
-cd dnu_major_trends
+pip install -r requirements.txt
+```
+
+2. **Chạy ứng dụng:**
+```bash
+python app.py
+```
+
+3. **Truy cập:**
+- URL: `http://localhost:5000`
+- Username: `admin`
+- Password: `admin`
+
+---
+
+**Developed with ❤️ for Đại học Đại Nam**
+
+Phân tích và dự báo xu hướng chọn ngành tại Đại học Đại Nam.
+
+## Tính năng chính
+- Upload dữ liệu CSV/Excel → lưu SQLite
+- Dashboard phân tích xu hướng, phân bố giới tính/khu vực, heatmap độ hot ngành
+- Dự báo 3–5 năm bằng Prophet (nếu cài đặt), fallback Linear Regression/ARIMA
+- Xuất báo cáo Excel/PDF
+- Đăng nhập quản trị (mặc định: admin/admin)
+
+## Cài đặt (Windows PowerShell)
+```powershell
+# tạo môi trường ảo (khuyến nghị)
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r dnu_major_trends\requirements.txt
+```
+
+## Chạy ứng dụng
+```powershell
+$env:FLASK_APP = "dnu_major_trends/app.py"; python dnu_major_trends/app.py
+```
+Mở http://localhost:5000 và đăng nhập bằng admin/admin.
+
+## Tạo dữ liệu mẫu (tùy chọn)
+```powershell
+python dnu_major_trends/seed_data.py
+```
+
+## Định dạng dữ liệu
+CSV/Excel yêu cầu các cột: `year, major, students, male, female, region, avg_score`.
+
+Ví dụ CSV:
+```
+year,major,students,male,female,region,avg_score
+2023,Công nghệ thông tin,200,120,80,Bắc,23.5
+2023,Công nghệ thông tin,150,90,60,Trung,23.2
+```
+
+## API chính
+- GET /api/overview
+- GET /api/majors
+- GET /api/trend?major=...
+- GET /api/gender?major=...
+- GET /api/region?major=...
+- GET /api/heatmap
+- GET /api/forecast?major=...&years=5
+- GET /api/forecast/summary
+- GET /export/excel, GET /export/pdf
+
+## Celery + Beat (tự động cập nhật dự báo)
+Yêu cầu Redis đang chạy ở `redis://localhost:6379/0` (có thể sửa trong `config.py` hoặc biến môi trường `CELERY_BROKER_URL`).
+
+Chạy worker và beat trên Windows PowerShell (2 cửa sổ riêng):
+```powershell
+# Cửa sổ 1: worker
+Set-Location 'd:\CDS NTA\dnu_major_trends'
+celery -A celery_app.celery worker --loglevel=info
+
+# Cửa sổ 2: beat (lên lịch mỗi ngày 02:00)
+celery -A celery_app.celery beat --loglevel=info
+```
+Bạn cũng có thể chạy thủ công nhiệm vụ trong Python REPL:
+```powershell
+python - <<'PY'
+from celery_app import update_all_forecasts
+update_all_forecasts.delay()
+PY
+```
+
+## Lưu ý Prophet
+Prophet có thời gian cài đặt lâu và yêu cầu build. Nếu không cài được, hệ thống sẽ tự động dùng Linear Regression hoặc ARIMA làm dự phòng.
+
+## Bảo mật
+- Thay đổi SECRET_KEY trong biến môi trường khi triển khai thật.
+- Đổi mật khẩu tài khoản admin mặc định sau khi chạy lần đầu.
+
