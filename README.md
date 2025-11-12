@@ -192,3 +192,28 @@ Prophet có thời gian cài đặt lâu và yêu cầu build. Nếu không cài
 - Thay đổi SECRET_KEY trong biến môi trường khi triển khai thật.
 - Đổi mật khẩu tài khoản admin mặc định sau khi chạy lần đầu.
 
+## 📬 **13. Liên hệ**
+
+### **👨‍🎓 Sinh viên thực hiện**
+- **Họ tên:** Nguyễn Tuấn Anh
+- **Mã sinh viên:** 1671020031
+- **Lớp:** CNTT 16-06
+
+### **🏫 Đơn vị**
+- **Khoa:** Công nghệ Thông tin
+- **Trường:** Đại học Đại Nam
+- 🌐 **Website:** [dainam.edu.vn/vi/khoa-cong-nghe-thong-tin](https://dainam.edu.vn/vi/khoa-cong-nghe-thong-tin)
+- 📱 **Fanpage:** [AIoTLab - FIT DNU](https://www.facebook.com/DNUAIoTLab)
+- 📧 **Email:** contact@example.com
+
+
+---
+
+<div align="center">
+
+### ⭐ **Nếu bạn thấy dự án hữu ích, hãy cho 6 Star nhé!** ⭐
+
+**Made with ❤️ by Students of DaiNam University**
+
+
+</div>
