@@ -192,13 +192,13 @@ Prophet có thời gian cài đặt lâu và yêu cầu build. Nếu không cài
 - Thay đổi SECRET_KEY trong biến môi trường khi triển khai thật.
 - Đổi mật khẩu tài khoản admin mặc định sau khi chạy lần đầu.
 
-## 📬 **13. Liên hệ**
+## 📬 ** Thông tin liên hệ**
 
 ### **👨‍🎓 Sinh viên thực hiện**
 - **Họ tên:** Nguyễn Tuấn Anh
 - **Mã sinh viên:** 1671020031
 - **Lớp:** CNTT 16-06
-
+- **Email:** tuananhsrr004@gmail.com
 ### **🏫 Đơn vị**
 - **Khoa:** Công nghệ Thông tin
 - **Trường:** Đại học Đại Nam
